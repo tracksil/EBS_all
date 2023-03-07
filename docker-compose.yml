@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  tasks:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./tasks
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+    networks:
+      - mynet
+
+  db:
+    image: postgres:13
+    restart: "on-failure"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
+    networks:
+      - mynet
+
+  pghero:
+    image: ankane/pghero
+    restart: "on-failure"
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+    networks:
+      - mynet
+
+  redis:
+    image: redis:latest
+    restart: "on-failure"
+    networks:
+      - mynet
+
+  blogs:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./blogs
+    volumes:
+      - ./blogs/static/:/static
+    networks:
+      - mynet
+
+  nginx:
+    build:
+      dockerfile: /Dockerfile
+    volumes:
+      - ./blogs/static/:/static
+    ports:
+      - "80:8000"
+    networks:
+      - mynet
+
+networks:
+  mynet:

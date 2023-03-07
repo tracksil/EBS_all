@@ -1,0 +1,47 @@
+[run]
+source = 
+    Milestone.apps.common
+    Milestone.apps.tasks
+    Milestone.apps.times
+    Milestone.apps.users
+omit =
+        *migrations*
+        *add_tasks_and_times.py
+        *test*
+        *settings*
+        *admin.py
+        *apps.py
+        *urls.py
+        *wsgi.py
+        *asgi.py
+        *manage.py
+        *__init__.py
+
+
+[report]
+omit =
+        *migrations*
+        *add_tasks_and_times.py
+        *test*
+        *settings*
+        *admin.py
+        *apps.py
+        *urls.py
+        *wsgi.py
+        *asgi.py
+        *manage.py
+        *__init__.py
+
+
+exclude_lines =
+    pragma: no cover
+    def __str__
+    def __repr__
+    if settings.DEBUG
+    if False:
+    if TYPE_CHECKING:
+    raise NotImplementedError
+    return NotImplemented
+
+[html]
+directory = coverage_html_report

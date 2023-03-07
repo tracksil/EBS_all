@@ -1,0 +1,103 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "testuser@gmail.com",
+      "first_name": "Test",
+      "last_name": "User",
+      "email": "testuser@gmail.com",
+      "password": "password"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "testuser1@gmail.com",
+      "first_name": "Test1",
+      "last_name": "User1",
+      "email": "testuser1@gmail.com",
+      "password": "password1"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "title": "testuser@example.com",
+      "description": "testuser@example.com",
+      "status": 1,
+      "owner": 1
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "title": "testuser1@example.com",
+      "description": "testuser1@example.com",
+      "status": 0,
+      "owner": 2
+    }
+  },
+  {
+    "model": "tasks.comment",
+    "pk": 1,
+    "fields": {
+      "text": "comment 1 text",
+      "task": 1
+    }
+  },
+  {
+    "model": "tasks.comment",
+    "pk": 2,
+    "fields": {
+      "text": "comment 2 text",
+      "task": 2
+    }
+  },
+  {
+    "model": "times.time",
+    "pk": 1,
+    "fields": {
+      "start": "2023-02-23T10:28:32.856Z",
+      "minutes": 0,
+      "task": 1,
+      "owner": 1
+    }
+  },
+  {
+    "model": "times.time",
+    "pk": 2,
+    "fields": {
+      "start": "2023-02-22T10:28:32.856Z",
+      "minutes": 1,
+      "task": 2,
+      "owner": 2
+    }
+  },
+  {
+    "model": "times.time",
+    "pk": 3,
+    "fields": {
+      "start": "2023-01-23T10:28:32.856Z",
+      "end": "2023-01-23T10:29:32.856Z",
+      "minutes": 12,
+      "task": 2,
+      "owner": 2
+    }
+  },
+  {
+    "model": "times.time",
+    "pk": 4,
+    "fields": {
+      "start": "2023-02-22T10:28:32.856Z",
+      "end": "2023-02-22T10:29:32.856Z",
+      "minutes": 12,
+      "task": 1,
+      "owner": 1
+    }
+  }
+]
+

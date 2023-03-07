@@ -1,0 +1,48 @@
+FROM python:3.10
+
+# Install missing libs
+RUN apt-get update \
+    && apt-get install -y curl libpq-dev gcc python3-cffi git && \
+apt-get clean autoclean && \
+apt-get autoremove --purge -y && \
+rm -rf /var/lib/apt/lists/* && \
+rm -f /var/cache/apt/archives/*.deb
+
+# Creating Application Source Code Directory
+RUN mkdir blogs
+
+COPY . /blogs/
+# Setting Home Directory for containers
+WORKDIR /blogs
+
+# Installing python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
+
+# Cleanup
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /root/.cache/*
+RUN rm -rf /tmp/*
+RUN apt-get -y autoremove --purge && apt-get -y autoclean && apt-get -y clean
+RUN rm -rf /usr/share/man/*
+RUN rm -rf /usr/share/doc/*
+RUN find /var/lib/apt -type f | xargs rm -f
+RUN find /var/cache -type f -exec rm -rf {} \;
+RUN find /var/log -type f | while read f; do echo -ne '' > $f; done;
+
+# Copying src code to Container
+COPY . /blogs
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Environemnt variables
+ENV DJANGO_ENV development
+ENV GUNICORN_BIND 0.0.0.0:8002
+ENV GUNICORN_WORKERS 4
+ENV GUNICORN_WORKERS_CONNECTIONS 1001
+
+# Exposing Ports
+EXPOSE 8002
+
+# Running Python Application
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8002

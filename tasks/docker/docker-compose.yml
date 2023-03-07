@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  web:
+    build: ..
+    restart: "on-failure"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      REDIS_HOST: redis
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ../:/code
+  db:
+    image: postgres:latest
+    restart: "on-failure"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: ${DATABASE_HOST}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
+  pghero:
+    image: ankane/pghero
+    restart: "on-failure"
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+  redis:
+    image: redis:latest
+    restart: "on-failure"
+
+volumes:
+  redis: {}
+  postgres_data:
